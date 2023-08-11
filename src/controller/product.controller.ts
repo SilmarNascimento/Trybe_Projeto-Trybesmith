@@ -5,7 +5,7 @@ import mapStatusHTTP from '../utils/mapStatusHTTP';
 const createProduct = async (request: Request, response: Response): Promise<Response> => {
   const { name, price, orderId } = request.body;
   const { status, data } = await productService.newProduct({ name, price, orderId });
-  if (status !== 'SUCCESSFUL') {
+  if (status !== 'CREATED') {
     return response.status(mapStatusHTTP(status)).json(data);
   }
   return response.status(mapStatusHTTP(status)).json(data);
