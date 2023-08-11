@@ -11,6 +11,4 @@ const mapStatus = (string: string): number => {
   return statusObject[string] ?? 500;
 };
 
-module.exports = {
-  mapStatus,
-};
+export default mapStatus;

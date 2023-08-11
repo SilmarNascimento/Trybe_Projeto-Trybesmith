@@ -1,14 +1,20 @@
 import
-Product,
+ProductModel,
 {
   ProductInputtableTypes,
 } from '../database/models/product.model';
+import { Product } from '../types/Product';
+import { ServiceResponse } from '../types/ServiceResponse';
 
-const createProduct = async (product: ProductInputtableTypes) => {
-  const response = await Product.create(product);
-  return response.dataValues;
+const newProduct = async (product: ProductInputtableTypes): Promise<ServiceResponse<Product>> => {
+  const { name, price, orderId } = product;
+  if (!name || !price || !orderId) {
+    return { status: 'INVALID_VALUE', data: { message: 'Dados inválidos' } };
+  }
+  const response = await ProductModel.create(product);
+  return { status: 'SUCCESSFUL', data: response.dataValues };
 };
 
 export default {
-  createProduct,
+  newProduct,
 };

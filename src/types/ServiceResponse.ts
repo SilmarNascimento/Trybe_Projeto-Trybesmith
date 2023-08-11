@@ -6,7 +6,7 @@ export type ServiceResponseError = {
 };
 
 export type ServerResponseSuccess<Type> = {
-  status: 'SUCCESSFUL',
+  status: 'SUCCESSFUL' | 'CREATED',
   data: Type
 };
 
