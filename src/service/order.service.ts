@@ -1,5 +1,6 @@
 import OrderModel, { OrderSequelizeModel } from '../database/models/order.model';
-import ProductModel from '../database/models/product.model';
+import { Order } from '../types/Order';
+import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import { ServiceResponse } from '../types/ServiceResponse';
 
 /* const newProduct = async (product: ProductInputtableTypes): Promise<ServiceResponse<Product>> => {
@@ -12,11 +13,19 @@ import { ServiceResponse } from '../types/ServiceResponse';
   return { status: 'CREATED', data: { id, name, price } };
 }; */
 
-const getAllOrders = async (): Promise<ServiceResponse<OrderSequelizeModel[]>> => {
+const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
   const getAllResponse = await OrderModel.findAll({
     include: [{ model: ProductModel, as: 'productIds' }],
   });
-  return { status: 'SUCCESSFUL', data: getAllResponse };
+  const processedData = getAllResponse.map((order: OrderSequelizeModel) => {
+    const productIds = order.dataValues.productIds as unknown as ProductSequelizeModel[];
+    const ids = productIds
+      .map((products: ProductSequelizeModel) => products.dataValues.id);
+    return { ...order.dataValues, productIds: ids };
+  });
+  console.log(processedData);
+  
+  return { status: 'SUCCESSFUL', data: processedData };
 };
 
 export default {
