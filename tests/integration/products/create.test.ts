@@ -4,7 +4,6 @@ import chaiHttp from 'chai-http';
 import ProductModel from '../../../src/database/models/product.model';
 import app from '../../../src/app'
 import productMock from '../../mocks/product.mock';
-import { log } from 'console';
 
 chai.use(chaiHttp);
 

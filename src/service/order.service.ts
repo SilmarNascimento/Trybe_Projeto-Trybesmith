@@ -17,14 +17,13 @@ const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
   const getAllResponse = await OrderModel.findAll({
     include: [{ model: ProductModel, as: 'productIds' }],
   });
-  const processedData = getAllResponse.map((order: OrderSequelizeModel) => {
-    const productIds = order.dataValues.productIds as unknown as ProductSequelizeModel[];
-    const ids = productIds
-      .map((products: ProductSequelizeModel) => products.dataValues.id);
-    return { ...order.dataValues, productIds: ids };
-  });
-  console.log(processedData);
-  
+  const processedData = getAllResponse
+    .map((order: OrderSequelizeModel) => {
+      const productsArray = order.dataValues.productIds as unknown as ProductSequelizeModel[];
+      const ids = productsArray
+        .map((products: ProductSequelizeModel) => products.dataValues.id);
+      return { ...order.dataValues, productIds: ids };
+    });
   return { status: 'SUCCESSFUL', data: processedData };
 };
 

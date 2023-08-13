@@ -23,9 +23,25 @@ const requestBodyWithoutName = {
   orderId: 5,
 };
 
+const getAllProductsResponse = [
+  {
+    id: 1,
+    name: "Pedra Filosofal",
+    price: "20 gold",
+    orderId: 2
+  },
+  {
+    id: 2,
+    name: "Lança do Destino",
+    price: "100 diamond",
+    orderId: 1
+  }
+];
+
 export default {
   insertProduct,
   createdResponse,
   validRequestBody,
   requestBodyWithoutName,
+  getAllProductsResponse,
 }
