@@ -17,6 +17,8 @@ const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
   const getAllResponse = await OrderModel.findAll({
     include: [{ model: ProductModel, as: 'productIds' }],
   });
+  console.log(getAllResponse);
+  
   const processedData = getAllResponse
     .map((order: OrderSequelizeModel) => {
       const productsArray = order.dataValues.productIds as unknown as ProductSequelizeModel[];

@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 describe('GET /products', function () { 
   beforeEach(function () { sinon.restore(); });
-  it('verifica se é possível retornar todos os produtos cadastrados', async function() {
+  it('Verifica se é possível retornar todos os produtos cadastrados', async function() {
     const productsFound = productMock.getAllProductsResponse
         .map((product) => ProductModel.build(product));
     sinon.stub(ProductModel, 'findAll').resolves(productsFound);
@@ -18,9 +18,6 @@ describe('GET /products', function () {
       .request(app)
       .get('/products')
       .send();
-
-    console.log('resposta da requisição: ', httpResponse);
-    
 
     expect(httpResponse.status).to.be.equal(200);
     expect(httpResponse.body).to.be.deep.equal(productMock.getAllProductsResponse);
