@@ -16,7 +16,7 @@ const tokenValidation = async (
     const decoded = jwtUtil.verify(token);
     const user = await UserModel.findOne({ where: { username: decoded.username } });
     if (!user) {
-      return response.status(401).json({ message: 'Erro ao procurar o usuário do token' });
+      return response.status(401).json({ message: 'Invalid token' });
     }
     next();
   } catch (error) {

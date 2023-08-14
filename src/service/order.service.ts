@@ -3,11 +3,8 @@ import { Order } from '../types/Order';
 import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import { ServiceResponse } from '../types/ServiceResponse';
 
-/* const newProduct = async (product: ProductInputtableTypes): Promise<ServiceResponse<Product>> => {
-  const { name, price, orderId } = product;
-  if (!name || !price || !orderId) {
+/* const placeOrder = async (userId: number): Promise<ServiceResponse<Product>> => {
     return { status: 'INVALID_VALUE', data: { message: 'Dados inválidos' } };
-  }
   const response = await ProductModel.create(product);
   const { id } = response.dataValues;
   return { status: 'CREATED', data: { id, name, price } };
@@ -31,4 +28,5 @@ const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
 
 export default {
   getAllOrders,
+  // placeOrder,
 };
