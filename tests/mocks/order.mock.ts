@@ -1,3 +1,6 @@
+import jwtUtil from "../../src/utils/jwt.util";
+
+
 const productsOrder1 = [
   {
     "id": 1,
@@ -33,8 +36,61 @@ const getAllResponse = [
     "userId": 1,
     "productIds": productsOrder2
   }
-]
+];
+
+const validRequestPlaceOrder = {
+  userId: 1,
+  productIds: [1, 2]
+};
+
+const requestPlaceOrderWithoutUserId = {
+  productIds: [1, 2]
+};
+const requestPlaceOrderInvalideTypeUserId = {
+  userId: '1',
+  productIds: [1, 2]
+};
+
+const requestPlaceOrderWithoutProductIds = {
+  userId: 1,
+};
+
+const requestPlaceOrderInvalidTypeProductIds = {
+  userId: 1,
+  productIds: 3,
+};
+
+const requestPlaceOrderEmptyProductIds = {
+  userId: 1,
+  productIds: []
+};
+
+const responseTokenNotFound = { message: 'Token not found' };
+const responseInvalidToken = { message: 'Invalid token' };
+const responseRequestWithoutUserId = { message: '"userId" is required' };
+const responseRequestInvalidTypeUserId = { message: '"userId" must be a number' };
+const responseRequestUserNotFound = { message: '"userId" not found' };
+const responseRequestWithoutProductIds = { message: '"productIds" is required' };
+const responseRequestInvalidTypeProductIds = { message: '"productIds" must be an array' };
+const responseRequestEmptyProductIds = { message: '"productIds" must include only numbers' };
+
+
+
 
 export default {
   getAllResponse,
+  validRequestPlaceOrder,
+  requestPlaceOrderWithoutUserId,
+  requestPlaceOrderInvalideTypeUserId,
+  requestPlaceOrderWithoutProductIds,
+  requestPlaceOrderInvalidTypeProductIds,
+  requestPlaceOrderEmptyProductIds,
+  responseTokenNotFound,
+  responseInvalidToken,
+  responseRequestWithoutUserId,
+  responseRequestInvalidTypeUserId,
+  responseRequestUserNotFound,
+  responseRequestWithoutProductIds,
+  responseRequestInvalidTypeProductIds,
+  responseRequestEmptyProductIds,
 }
