@@ -20,7 +20,7 @@ const tokenValidation = async (
     }
     next();
   } catch (error) {
-    return response.status(401).json({ message: 'Expired or invalid token' });
+    return response.status(401).json({ message: 'Invalid token' });
   }
 };
 

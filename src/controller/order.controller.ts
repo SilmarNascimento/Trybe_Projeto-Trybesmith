@@ -7,6 +7,13 @@ const getAllOrders = async (_request: Request, response: Response): Promise<Resp
   return response.status(mapStatusHTTP(status)).json(data);
 };
 
+const placeOrder = async (request: Request, response: Response): Promise<Response> => {
+  const { userId, productIds } = request.body; 
+  const { status, data } = await orderService.placeOrder({ userId, productIds });
+  return response.status(mapStatusHTTP(status)).json(data);
+};
+
 export default {
   getAllOrders,
+  placeOrder,
 };

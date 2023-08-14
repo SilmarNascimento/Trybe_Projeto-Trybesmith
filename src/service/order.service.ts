@@ -1,14 +1,28 @@
-import OrderModel, { OrderSequelizeModel } from '../database/models/order.model';
+import OrderModel,
+{
+  OrderInputtableTypes,
+  OrderSequelizeModel,
+} from '../database/models/order.model';
 import { Order } from '../types/Order';
 import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import { ServiceResponse } from '../types/ServiceResponse';
+import UserModel from '../database/models/user.model';
 
-/* const placeOrder = async (userId: number): Promise<ServiceResponse<Product>> => {
-    return { status: 'INVALID_VALUE', data: { message: 'Dados inválidos' } };
-  const response = await ProductModel.create(product);
-  const { id } = response.dataValues;
-  return { status: 'CREATED', data: { id, name, price } };
-}; */
+const placeOrder = async (
+  { userId, productIds }: OrderInputtableTypes,
+): Promise<ServiceResponse<OrderInputtableTypes>> => {
+  const userFound = await UserModel.findOne({ where: { id: userId } });
+  if (!userFound) {
+    return { status: 'NOT_FOUND', data: { message: '"userId" not found' } };
+  }
+  const insertOrder = await OrderModel.create({ userId, productIds });
+  await ProductModel.create({
+    name: userFound.dataValues.username,
+    orderId: insertOrder.dataValues.id,
+    price: '',
+  });
+  return { status: 'CREATED', data: { userId, productIds } };
+};
 
 const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
   const getAllResponse = await OrderModel.findAll({
@@ -28,5 +42,5 @@ const getAllOrders = async (): Promise<ServiceResponse<Order[]>> => {
 
 export default {
   getAllOrders,
-  // placeOrder,
+  placeOrder,
 };
