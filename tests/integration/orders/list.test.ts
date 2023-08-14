@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 describe('GET /orders', function () { 
   beforeEach(function () { sinon.restore(); });
-/*   it('Verifica se é possível retornar todos os pedidos cadastrados', async function() {
+  /* it('Verifica se é possível retornar todos os pedidos cadastrados', async function() {
     const getAllResponse = orderMock.getAllResponse
       .map((order) => {
         const productArray = order.productIds as Product[];
