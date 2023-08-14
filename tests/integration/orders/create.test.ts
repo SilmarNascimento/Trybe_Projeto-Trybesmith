@@ -4,6 +4,7 @@ import chaiHttp from 'chai-http';
 import app from '../../../src/app'
 import jwtUtil from '../../../src/utils/jwt.util';
 import orderMock from '../../mocks/order.mock';
+import UserModel from '../../../src/database/models/user.model';
 
 chai.use(chaiHttp);
 
@@ -31,15 +32,16 @@ describe('POST /orders', function () {
 
   it('verifica se não é possível fazer um pedido sem um token', async function() {
     const requestBody = orderMock.validRequestPlaceOrder;
+    sinon.stub(UserModel, 'findOne').resolves(null);
 
     const httpResponse = await chai
       .request(app)
       .post('/orders')
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer InvalidToken`)
       .send(requestBody);
 
     expect(httpResponse.status).to.be.equal(401);
-    expect(httpResponse.body).to.be.deep.equal();
+    expect(httpResponse.body).to.be.deep.equal(orderMock.responseInvalidToken);
   });
 
 });
