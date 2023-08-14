@@ -12,7 +12,7 @@ const loginWithoutPassword = {
 };
 
 const responseWithoutData = { message: '"username" and "password" are required' };
-const responseInvalidData = { message: 'username or password invalid'};
+const responseInvalidData = { message: 'Username or password invalid'};
 
 export default {
   validLogin,

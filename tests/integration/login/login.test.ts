@@ -11,7 +11,6 @@ chai.use(chaiHttp);
 
 describe('POST /login', function () { 
   const SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS || 10;
-  const FALSE_SALT_ROUNDS = 5;
 
   beforeEach(function () { sinon.restore(); });
  
@@ -41,7 +40,7 @@ describe('POST /login', function () {
 
   it('verifica que não é possível fazer login de um usuário não cadastrado', async function() {
     const requestBody = userMock.validLogin;
-    sinon.stub(UserModel, 'findOne').resolves(null);
+    sinon.stub(UserModel, 'findOne').resolves(undefined);
 
     const httpResponse = await chai
       .request(app)
@@ -54,10 +53,11 @@ describe('POST /login', function () {
 
   it('verifica que não é possível fazer login de um usuário com senha inválida', async function() {
     const userFound = UserModel.build({
+      id: 1,
       username: 'Silmar Nascimento',
       vocation: 'magician',
       level: 20,
-      password: bcrypt.hashSync('Shanloo', FALSE_SALT_ROUNDS),
+      password: 'Shanloo',
     })
     const requestBody = userMock.validLogin;
     sinon.stub(UserModel, 'findOne').resolves(userFound);
@@ -66,7 +66,7 @@ describe('POST /login', function () {
       .request(app)
       .post('/login')
       .send(requestBody);
-
+    
     expect(httpResponse.status).to.be.equal(401);
     expect(httpResponse.body).to.be.deep.equal(userMock.responseInvalidData);
   });
@@ -79,7 +79,7 @@ describe('POST /login', function () {
       level: 20,
       password: bcrypt.hashSync('Shanloo', SALT_ROUNDS),
     });
-    const token = jwtUtil.sign({id:1, username: 'Silmar Nascimento'});
+    const token = jwtUtil.sign({ id: 1, username: 'Silmar Nascimento'});
     const requestBody = userMock.validLogin;
     sinon.stub(UserModel, 'findOne').resolves(userFound);
 
@@ -87,7 +87,7 @@ describe('POST /login', function () {
       .request(app)
       .post('/login')
       .send(requestBody);
-
+    
     expect(httpResponse.status).to.be.equal(200);
     expect(httpResponse.body).to.have.key('token');
     expect(httpResponse.body).to.be.deep.equal({ token });
