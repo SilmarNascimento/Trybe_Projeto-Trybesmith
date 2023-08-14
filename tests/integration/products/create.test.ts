@@ -19,9 +19,6 @@ describe('POST /products', function () {
       .post('/products')
       .send(requestBody);
 
-    console.log('resposta da requisição: ', httpResponse);
-    
-
     expect(httpResponse.status).to.be.equal(201);
     expect(httpResponse.body).to.be.deep.equal(productMock.createdResponse);
   });

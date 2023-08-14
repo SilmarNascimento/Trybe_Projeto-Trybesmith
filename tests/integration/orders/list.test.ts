@@ -3,7 +3,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../../src/app';
 import orderMock from '../../mocks/order.mock';
-import OrderModel, { OrderSequelizeModel } from '../../../src/database/models/order.model';
+import OrderModel from '../../../src/database/models/order.model';
 import ProductModel from '../../../src/database/models/product.model';
 import { Product } from '../../../src/types/Product';
 
@@ -18,9 +18,9 @@ describe('GET /orders', function () {
         const productSequelizeModel = productArray
           .map((product) => ProductModel.build(product));
         return OrderModel
-          .build({...order, productIds:productSequelizeModel});
+          .build({...order, productIds: productSequelizeModel});
       });
-    
+
     sinon.stub(OrderModel, 'findAll').resolves(getAllResponse);
     const httpResponse = await chai
       .request(app)

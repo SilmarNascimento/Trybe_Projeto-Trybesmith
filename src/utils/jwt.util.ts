@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 const secret = process.env.JWT_SECRET || 'senhaSecreta';
 
 type TokenPayload = {
+  id: number,
   username: string,
-  password: string,
 };
 
 const sign = (payload: TokenPayload): string => {
