@@ -16,6 +16,14 @@ describe('POST /orders', function () {
     username: 'Silmar Nascimento'
   };
 
+  const userFound = UserModel.build({
+    id: 1,
+    username: 'Silmar Nascimento',
+    vocation: 'magician',
+    level: 20,
+    password: 'Shanloo',
+  });
+
   const token = jwtUtil.sign(userPayload);
 
   it('verifica se não é possível fazer um pedido sem um token', async function() {
@@ -42,6 +50,20 @@ describe('POST /orders', function () {
 
     expect(httpResponse.status).to.be.equal(401);
     expect(httpResponse.body).to.be.deep.equal(orderMock.responseInvalidToken);
+  });
+
+  it('verifica se não é possível fazer um pedido sem a chave userID na requisição', async function() {
+    const requestBody = orderMock.requestPlaceOrderWithoutUserId;
+    sinon.stub(UserModel, 'findOne').resolves(userFound);
+
+    const httpResponse = await chai
+      .request(app)
+      .post('/orders')
+      .set('Authorization', `Bearer ${token}`)
+      .send(requestBody);
+
+    expect(httpResponse.status).to.be.equal(400);
+    expect(httpResponse.body).to.be.deep.equal(orderMock.responseRequestWithoutUserId);
   });
 
 });

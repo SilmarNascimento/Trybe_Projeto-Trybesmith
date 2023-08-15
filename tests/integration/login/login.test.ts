@@ -58,7 +58,7 @@ describe('POST /login', function () {
       vocation: 'magician',
       level: 20,
       password: 'Shanloo',
-    })
+    });
     const requestBody = userMock.validLogin;
     sinon.stub(UserModel, 'findOne').resolves(userFound);
 

@@ -1,6 +1,3 @@
-import jwtUtil from "../../src/utils/jwt.util";
-
-
 const productsOrder1 = [
   {
     "id": 1,
