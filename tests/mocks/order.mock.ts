@@ -40,6 +40,17 @@ const validRequestPlaceOrder = {
   productIds: [1, 2]
 };
 
+const createOrderMock = {
+  userId: 1,
+  productIds: [1, 2],
+};
+
+const createProductMock = {
+  name: "Xal'alath",
+  price: '50 diamonds',
+  orderId: 5
+};
+
 const requestPlaceOrderWithoutUserId = {
   productIds: [1, 2]
 };
@@ -90,4 +101,6 @@ export default {
   responseRequestWithoutProductIds,
   responseRequestInvalidTypeProductIds,
   responseRequestEmptyProductIds,
+  createOrderMock,
+  createProductMock,
 }

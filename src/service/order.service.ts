@@ -1,26 +1,29 @@
-import OrderModel,
-{
-  OrderInputtableTypes,
-  OrderSequelizeModel,
-} from '../database/models/order.model';
+import OrderModel, { OrderSequelizeModel } from '../database/models/order.model';
 import { Order } from '../types/Order';
 import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import { ServiceResponse } from '../types/ServiceResponse';
 import UserModel from '../database/models/user.model';
 
+type PlaceOrderRequest = {
+  userId: number,
+  productIds: number[],
+};
+
 const placeOrder = async (
-  { userId, productIds }: OrderInputtableTypes,
-): Promise<ServiceResponse<OrderInputtableTypes>> => {
+  { userId, productIds }: PlaceOrderRequest,
+): Promise<ServiceResponse<PlaceOrderRequest>> => {
   const userFound = await UserModel.findOne({ where: { id: userId } });
-  if (!userFound) {
-    return { status: 'NOT_FOUND', data: { message: '"userId" not found' } };
-  }
+  if (!userFound) return { status: 'NOT_FOUND', data: { message: '"userId" not found' } };
   const insertOrder = await OrderModel.create({ userId, productIds });
-  await ProductModel.create({
-    name: userFound.dataValues.username,
-    orderId: insertOrder.dataValues.id,
-    price: '',
+  const promises = productIds.map(async () => {
+    const createProductResponse = await ProductModel.create({
+      name: userFound.dataValues.username,
+      orderId: insertOrder.dataValues.id,
+      price: '',
+    });
+    return createProductResponse;
   });
+  await Promise.all(promises);
   return { status: 'CREATED', data: { userId, productIds } };
 };
 
